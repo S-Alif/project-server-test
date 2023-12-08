@@ -1,5 +1,6 @@
 const sellers = require("../models/sellerModel");
 const users = require("../models/userModel");
+const { createToken } = require("../util/jwt");
 const { encryptPass, comparePass } = require("../util/passSecurity");
 
 // user registration service
@@ -30,7 +31,6 @@ exports.sellerRegister = async (req) => {
 // user login service
 exports.sellerLogin = async (req) => {
   try {
-
     let query = { email: req.body.email, isSeller: true }
 
     const user = await sellers.findOne(query).select("_id password isSeller")
@@ -41,8 +41,9 @@ exports.sellerLogin = async (req) => {
     if (!passCompare) {
       return { status: 0, code: 200, data: "Invalid login" }
     }
+    let token = createToken({ email: req.body.email, id: user['_id'].toString(), isSeller: user['isSeller'] })
 
-    return { status: 1, code: 200, data: user }
+    return { status: 1, code: 200, data: user, token }
 
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong" }

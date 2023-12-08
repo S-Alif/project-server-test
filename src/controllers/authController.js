@@ -1,6 +1,6 @@
 const { cookieMaker } = require("../helper/helper");
 const { sellerRegister, sellerDelete, getSellerById, sellerUpdate, sellerLogin } = require("../services/sellerServices");
-const { userRegister, userLogin, userDelete, getUserById, userUpdate } = require("../services/userServices");
+const { userRegister, userLogin, userDelete, getUserById, userUpdate, profile } = require("../services/userServices");
 
 // registration controller
 exports.user_register = async (req, res) => {
@@ -12,9 +12,13 @@ exports.user_register = async (req, res) => {
 exports.user_login = async (req, res) => {
     let result = await userLogin(req);
     if(result['status'] === 1){
-        let createdCookie = cookieMaker({ email: req.body.email, id: result.data._id, isSeller: result.data.isSeller})
-        res.cookie("token", createdCookie.token, createdCookie.cookieOption)
-        res.status(200).json({
+        let cookieOption = {
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+            httpOnly: false,
+            sameSite: "none",
+            secure: true
+        }
+        res.status(200).cookie("token", result.token, cookieOption).json({
             status: result.status,
             code: result.code,
             data: {
@@ -58,6 +62,13 @@ exports.getUser = async (req, res) => {
     res.status(200).json(result)
 }
 
+// user profile
+exports.getUserProfile = async (req, res) => {
+    let result = await profile(req)
+    res.status(200).json(result)
+}
+
+
 
 // seller register
 exports.seller_register = async (req, res) => {
@@ -71,10 +82,11 @@ exports.seller_login = async (req, res) => {
 
     if(result['status'] == 1){
 
-        let createdCookie = cookieMaker({ email: req.body.email, id: result.data._id, isSeller: result.data.isSeller })
-
-        res.cookie("token", createdCookie.token, createdCookie.cookieOption)
-
+        let cookieOption = {
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+            httpOnly: false
+        }
+        res.cookie("token", result.token, cookieOption)
         res.status(200).json({
             status: result.status,
             code: result.code,

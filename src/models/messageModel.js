@@ -1,20 +1,20 @@
 const mongoose=require("mongoose")
 
 const messageSchema=mongoose.Schema({
-  ConversationId: {
-    type: String,
+  senderId: {
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
-  UserId: {
-    type: String,
+  receiverId: {
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
-  Description: {
+  text: {
     type: String,
     required: true
   }
 
 },{timestamps:true,versionKey:false})
 
-const MessageModel=mongoose.model("orders",messageSchema)
+const MessageModel=mongoose.model("messeges",messageSchema)
 module.exports=MessageModel;

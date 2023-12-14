@@ -1,6 +1,22 @@
 
 const MessageModel = require('../models/messageModel');
+const { createMsg, getPeople, getMsgs } = require('../services/messageServices');
 
+exports.msgCreate = async (msg) => {
+  let result = await createMsg(msg)
+}
+
+// get chat people
+exports.chatGet = async (req, res) => {
+  let result = await getPeople(req)
+  res.status(200).json(result)
+}
+
+// get messgaes by sender
+exports.msgGet = async (req, res) => {
+  let result = await getMsgs(req)
+  res.status(200).json(result)
+}
 
 exports.createMessage = async (req, res) => {
   try {

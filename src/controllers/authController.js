@@ -90,8 +90,7 @@ exports.seller_login = async (req, res) => {
             expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
             httpOnly: false
         }
-        res.cookie("token", result.token, cookieOption)
-        res.status(200).json({
+        res.status(200).cookie("token", result.token, cookieOption).json({
             status: result.status,
             code: result.code,
             data: {

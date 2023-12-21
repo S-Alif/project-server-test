@@ -13,7 +13,7 @@ const routes = require('./src/routes/routes');
 app.use(helmet());
 app.use(hpp());
 app.use(cors({
-    origin: "https://test-app-101.netlify.app",
+    origin: "https://trusthome.netlify.app",
     credentials: true
 }));
 app.use(cookieParser());

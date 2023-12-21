@@ -11,7 +11,7 @@ let server = app.listen(port,function (){
 
 const io = new Server(server, {
     cors: {
-        origin: "https://test-app-101.netlify.app",
+        origin: "https://trusthome.netlify.app",
         credentials: true
     }
 })
